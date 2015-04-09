@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="View">
+      <UniqueIdentifier>{0ee68a4d-3ec0-461e-96fc-6e5440c0ca3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View\Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="View\Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{196e5bce-8d33-49a3-9a35-633c46e0d1fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model\Header Files">
+      <UniqueIdentifier>{6a96e33e-69af-48da-94d8-24e2c0731b6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model\Source Files">
+      <UniqueIdentifier>{5febbd64-2107-45f8-97ae-d402e2fea3cc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FDView.h">
+      <Filter>View\Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FDView.cpp">
+      <Filter>View\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+</Project>
