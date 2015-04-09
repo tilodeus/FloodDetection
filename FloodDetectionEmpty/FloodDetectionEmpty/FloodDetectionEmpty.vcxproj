@@ -76,9 +76,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="FDModel.h" />
     <ClInclude Include="FDView.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FDModel.cpp" />
     <ClCompile Include="FDView.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

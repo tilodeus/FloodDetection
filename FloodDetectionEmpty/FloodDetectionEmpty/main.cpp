@@ -6,9 +6,8 @@ using namespace std;
 
 int main(int argc, char* args[]){
 	
-	FDView MyView;
+	FDView MyView("");
 	
-	int a;
-	cin >> a;
-	
+	//MyView.waitforInput();
+		
 }
