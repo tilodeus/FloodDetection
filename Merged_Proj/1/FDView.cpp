@@ -35,7 +35,7 @@ void FDView::DoTheThing(){
 	model.preProcess();
 	model.Process();
 	//salalala
-	string message = "This space is mine and under contsuction, go elsewhere!\n";
+	string message = "This space is mine and under construction, go elsewhere!\n";
 	generateMenu(message);
 }
 
