@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <stdio.h>
+#include <fstream>
+#include <iostream>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -35,4 +37,9 @@ private:
 	const int band2 = 1;
 
 	int get_nearest_cluster_center_index(int, int);
+
+	ofstream debug_file;
+	string debug;
+
+	void WriteDebug(string message, bool newline);
 };
