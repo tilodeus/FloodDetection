@@ -45,10 +45,14 @@ void FDModel::LoadImage(){
 		}
 	}
 
-	cluster_centers.push_back(Vec2i(51, 51));
+	/*cluster_centers.push_back(Vec2i(51, 51));
 	cluster_centers.push_back(Vec2i(102, 102));
 	cluster_centers.push_back(Vec2i(153, 153));
-	cluster_centers.push_back(Vec2i(204, 204));
+	cluster_centers.push_back(Vec2i(204, 204));*/
+	cluster_centers.push_back(Vec2i(10, 230));
+	cluster_centers.push_back(Vec2i(60, 230));
+	cluster_centers.push_back(Vec2i(110, 230));
+	cluster_centers.push_back(Vec2i(230, 230));
 
 	cout << endl << "original cluster centers:" << endl;
 	for (int i = 0; i < cluster_centers.size(); ++i){
@@ -63,7 +67,8 @@ void FDModel::LoadImage(){
 		cluster_average.push_back(Vec2i(0, 0));
 	}
 	
-	for (int iteration_count = 0; iteration_count < 2; ++iteration_count){
+	int max_iteration = 2;
+	for (int iteration_count = 0; iteration_count < max_iteration; ++iteration_count){
 
 		for (int i = 0; i < 256; ++i){
 			for (int j = 0; j < 256; ++j){
@@ -94,7 +99,7 @@ void FDModel::LoadImage(){
 
 		}
 
-		if (iteration_count == 1){
+		if (iteration_count == max_iteration-1){
 			cout << endl << "cluster member count:" << endl;
 			for (int i = 0; i < cluster_centers.size(); ++i){
 				cout << cluster_member_count[i] << endl;
@@ -124,7 +129,9 @@ void FDModel::LoadImage(){
 	}
 
 	clusters_image = Mat(image.rows, mystery_width, CV_8UC1);
-	output_image = Mat(image.rows, mystery_width, CV_8UC1);
+	all_waters_image = Mat(image.rows, mystery_width, CV_8UC1);
+	flooded_area_image = Mat(image.rows, mystery_width, CV_8UC1);
+	natural_waters_input_image = imread("termviz.tif", CV_32FC4);
 	for (int i = 0; i < image.rows; ++i){
 		for (int j = 0; j < mystery_width; ++j){
 			int band1_value = (int)image.at<Vec4b>(i, j)[band1];
@@ -132,10 +139,13 @@ void FDModel::LoadImage(){
 			if (!(band1_value == 0 && band2_value == 0)){
 				clusters_image.at<uchar>(i, j) = intensity_space[band1_value][band2_value].second * (255.0 / (cluster_centers.size()));
 				if (intensity_space[band1_value][band2_value].second == 0){
-					output_image.at<uchar>(i, j) = 0;
+					all_waters_image.at<uchar>(i, j) = 0;
+					if (natural_waters_input_image.at<Vec4b>(i, j)[0] == 255) flooded_area_image.at<uchar>(i, j) = 0;
+					else flooded_area_image.at<uchar>(i, j) = 255;
 				}
 				else{
-					output_image.at<uchar>(i, j) = 255;
+					all_waters_image.at<uchar>(i, j) = 255;
+					flooded_area_image.at<uchar>(i, j) = 255;
 				}
 			}
 			else{
@@ -144,17 +154,18 @@ void FDModel::LoadImage(){
 		}
 	}
 	
-	//namedWindow("original image", WINDOW_AUTOSIZE);
-	//imshow("original image", image);
-	namedWindow("intensity space image", WINDOW_AUTOSIZE);
-	imshow("intensity space image", intensity_space_image);
+	//namedWindow("intensity space image", WINDOW_AUTOSIZE);
+	//imshow("intensity space image", intensity_space_image);
 	imwrite("00intensity_space_image.bmp", intensity_space_image);
-	namedWindow("clusters", WINDOW_AUTOSIZE);
-	imshow("clusters", clusters_image);
+	//namedWindow("clusters", WINDOW_AUTOSIZE);
+	//imshow("clusters", clusters_image);
 	imwrite("00clusters.bmp", clusters_image);
-	namedWindow("water", WINDOW_AUTOSIZE);
-	imshow("water", output_image);
-	imwrite("00water.bmp", output_image);
+	//namedWindow("all waters", WINDOW_AUTOSIZE);
+	//imshow("all water", all_waters_image);
+	imwrite("00all_waters.bmp", all_waters_image);
+	//namedWindow("flooded area image", WINDOW_AUTOSIZE);
+	//imshow("flooded area image", flooded_area_image);
+	imwrite("00flooded_area.bmp", all_waters_image);
 	waitKey(0);
 
 	cout << endl << "Press ENTER to continue!" << endl;
