@@ -30,7 +30,8 @@ void FDModel::LoadImage(){
 
 	for (int i = 0; i < 256; ++i){
 		for (int j = 0; j < 256; ++j){
-			intensity_space[i][j].first = 0;
+			//intensity_space[i][j].first = 0;
+			intensity_space[i][j].counter = 0;
 		}
 	}
 	
@@ -41,7 +42,8 @@ void FDModel::LoadImage(){
 		for (int j = 0; j < mystery_width; ++j){
 			int band1_value = (int)image.at<Vec4b>(i, j)[band1];
 			int band2_value = (int)image.at<Vec4b>(i, j)[band2];
-			intensity_space[band1_value][band2_value].first += 1;
+			//intensity_space[band1_value][band2_value].first += 1;
+			intensity_space[band1_value][band2_value].counter += 1;
 		}
 	}
 
@@ -67,28 +69,35 @@ void FDModel::LoadImage(){
 
 		for (int i = 0; i < 256; ++i){
 			for (int j = 0; j < 256; ++j){
-				if (intensity_space[i][j].first != 0){
+				//if (intensity_space[i][j].first != 0){
+				if (intensity_space[i][j].counter != 0){
 					int nearest_cluster_center_index = get_nearest_cluster_center_index(i, j);
-					intensity_space[i][j].second = nearest_cluster_center_index;
+					//intensity_space[i][j].second = nearest_cluster_center_index;
+					intensity_space[i][j].cluster_index = nearest_cluster_center_index;
 
 					//cluster_average[nearest_cluster_center_index][0] += i;// *intensity_space[i][j].first;
 					//cluster_average[nearest_cluster_center_index][1] += j;// *intensity_space[i][j].first;
 					
 					cluster_average[nearest_cluster_center_index][0] = 
-						(float)cluster_member_count[nearest_cluster_center_index] / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].first)
+						//(float)cluster_member_count[nearest_cluster_center_index] / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].first)
+						(float)cluster_member_count[nearest_cluster_center_index] / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].counter)
 							* cluster_average[nearest_cluster_center_index][0]
 						+
-						(float)intensity_space[i][j].first / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].first)
+						//(float)intensity_space[i][j].first / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].first)
+						(float)intensity_space[i][j].counter / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].counter)
 							* i;
 
 					cluster_average[nearest_cluster_center_index][1] =
-						(float)cluster_member_count[nearest_cluster_center_index] / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].first)
+						//(float)cluster_member_count[nearest_cluster_center_index] / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].first)
+						(float)cluster_member_count[nearest_cluster_center_index] / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].counter)
 						* cluster_average[nearest_cluster_center_index][1]
 						+
-						(float)intensity_space[i][j].first / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].first)
+						//(float)intensity_space[i][j].first / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].first)
+						(float)intensity_space[i][j].counter / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].counter)
 						* j;
 
-					cluster_member_count[nearest_cluster_center_index] += intensity_space[i][j].first;
+					//cluster_member_count[nearest_cluster_center_index] += intensity_space[i][j].first;
+					cluster_member_count[nearest_cluster_center_index] += intensity_space[i][j].counter;
 				}
 			}
 
@@ -119,7 +128,8 @@ void FDModel::LoadImage(){
 	Mat intensity_space_image = Mat(256, 256, CV_8UC1);
 	for (int i = 0; i < 256; ++i){
 		for (int j = 0; j < 256; ++j){
-			intensity_space_image.at<uchar>(i, j) = ((intensity_space[i][j].first != 0) ? 255 : 0);
+			//intensity_space_image.at<uchar>(i, j) = ((intensity_space[i][j].first != 0) ? 255 : 0);
+			intensity_space_image.at<uchar>(i, j) = ((intensity_space[i][j].counter != 0) ? 255 : 0);
 		}
 	}
 
@@ -130,8 +140,10 @@ void FDModel::LoadImage(){
 			int band1_value = (int)image.at<Vec4b>(i, j)[band1];
 			int band2_value = (int)image.at<Vec4b>(i, j)[band2];
 			if (!(band1_value == 0 && band2_value == 0)){
-				clusters_image.at<uchar>(i, j) = intensity_space[band1_value][band2_value].second * (255.0 / (cluster_centers.size()));
-				if (intensity_space[band1_value][band2_value].second == 0){
+				//clusters_image.at<uchar>(i, j) = intensity_space[band1_value][band2_value].second * (255.0 / (cluster_centers.size()));
+				clusters_image.at<uchar>(i, j) = intensity_space[band1_value][band2_value].cluster_index * (255.0 / (cluster_centers.size()));
+				//if (intensity_space[band1_value][band2_value].second == 0){
+				if (intensity_space[band1_value][band2_value].cluster_index == 0){
 					output_image.at<uchar>(i, j) = 0;
 				}
 				else{

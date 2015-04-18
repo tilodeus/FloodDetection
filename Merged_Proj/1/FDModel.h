@@ -20,10 +20,16 @@ public:
 	void Clusterise();
 	//salalala
 private:
+	struct int_spc_el{
+		int counter;
+		int cluster_index;
+	};
+
 	Mat image;
 	Mat clusters_image;
 	Mat output_image;
-	std::pair<int, int> intensity_space[256][256];
+	//std::pair<int, int> intensity_space[256][256];
+	int_spc_el intensity_space[256][256];
 	std::vector<Vec2i> cluster_centers;
 	const int band1 = 3;
 	const int band2 = 1;
