@@ -1,7 +1,9 @@
 #include "FDModel.h"
 
 FDModel::FDModel(){
-
+	debug_file.open("debug.txt", std::ios_base::app);
+	string debug = "";
+	debug_file.close();
 }
 
 FDModel::~FDModel(){
@@ -23,6 +25,9 @@ void FDModel::LoadImage(){
 		return;
 	}
 
+	debug = "####################################################################################################################################################################################################################\nFile name: " + input_image;
+	WriteDebug(debug,true);
+
 	cout << endl << "image.rows: " << image.rows << "  image.cols: " << image.cols << endl;
 
 	//cout << endl << (int)image.at<Vec4b>(107, 122)[band1] << endl; //k3.tif max. hatarai (k3.tif egyebkent (108 X 164)-es)
@@ -30,7 +35,8 @@ void FDModel::LoadImage(){
 
 	for (int i = 0; i < 256; ++i){
 		for (int j = 0; j < 256; ++j){
-			intensity_space[i][j].first = 0;
+			//intensity_space[i][j].first = 0;
+			intensity_space[i][j].counter = 0;
 		}
 	}
 	
@@ -41,18 +47,28 @@ void FDModel::LoadImage(){
 		for (int j = 0; j < mystery_width; ++j){
 			int band1_value = (int)image.at<Vec4b>(i, j)[band1];
 			int band2_value = (int)image.at<Vec4b>(i, j)[band2];
-			intensity_space[band1_value][band2_value].first += 1;
+			//intensity_space[band1_value][band2_value].first += 1;
+			intensity_space[band1_value][band2_value].counter += 1;
 		}
 	}
 
-	/*cluster_centers.push_back(Vec2i(51, 51));
+	cluster_centers.clear();
+	cluster_centers.push_back(Vec2i(51, 51));
 	cluster_centers.push_back(Vec2i(102, 102));
 	cluster_centers.push_back(Vec2i(153, 153));
-	cluster_centers.push_back(Vec2i(204, 204));*/
-	cluster_centers.push_back(Vec2i(10, 230));
-	cluster_centers.push_back(Vec2i(60, 230));
-	cluster_centers.push_back(Vec2i(110, 230));
-	cluster_centers.push_back(Vec2i(230, 230));
+	cluster_centers.push_back(Vec2i(204, 204));
+
+	debug = "0:_______________________________________________________________________________________________________________________________________________________________________________________________________\n\t";
+	for (int i = 0; i < cluster_centers.size(); i++)
+	{
+		debug += "[" + to_string(cluster_centers[i][0]) + "," + to_string(cluster_centers[i][1]) + "]\t\t\t";
+	}
+	debug += "\n\t";
+	for (int i = 0; i < cluster_centers.size(); i++)
+	{
+		debug += "0\t\t\t";
+	}
+	WriteDebug(debug, true);
 
 	cout << endl << "original cluster centers:" << endl;
 	for (int i = 0; i < cluster_centers.size(); ++i){
@@ -67,39 +83,56 @@ void FDModel::LoadImage(){
 		cluster_average.push_back(Vec2i(0, 0));
 	}
 	
-	int max_iteration = 2;
-	for (int iteration_count = 0; iteration_count < max_iteration; ++iteration_count){
+	for (int iteration_count = 0; iteration_count < 2; ++iteration_count){
 
 		for (int i = 0; i < 256; ++i){
 			for (int j = 0; j < 256; ++j){
-				if (intensity_space[i][j].first != 0){
+				//if (intensity_space[i][j].first != 0){
+				if (intensity_space[i][j].counter != 0){
 					int nearest_cluster_center_index = get_nearest_cluster_center_index(i, j);
-					intensity_space[i][j].second = nearest_cluster_center_index;
+					//intensity_space[i][j].second = nearest_cluster_center_index;
+					intensity_space[i][j].cluster_index = nearest_cluster_center_index;
 
 					//cluster_average[nearest_cluster_center_index][0] += i;// *intensity_space[i][j].first;
 					//cluster_average[nearest_cluster_center_index][1] += j;// *intensity_space[i][j].first;
 					
 					cluster_average[nearest_cluster_center_index][0] = 
-						(float)cluster_member_count[nearest_cluster_center_index] / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].first)
+						//(float)cluster_member_count[nearest_cluster_center_index] / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].first)
+						(float)cluster_member_count[nearest_cluster_center_index] / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].counter)
 							* cluster_average[nearest_cluster_center_index][0]
 						+
-						(float)intensity_space[i][j].first / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].first)
+						//(float)intensity_space[i][j].first / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].first)
+						(float)intensity_space[i][j].counter / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].counter)
 							* i;
 
 					cluster_average[nearest_cluster_center_index][1] =
-						(float)cluster_member_count[nearest_cluster_center_index] / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].first)
+						//(float)cluster_member_count[nearest_cluster_center_index] / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].first)
+						(float)cluster_member_count[nearest_cluster_center_index] / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].counter)
 						* cluster_average[nearest_cluster_center_index][1]
 						+
-						(float)intensity_space[i][j].first / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].first)
+						//(float)intensity_space[i][j].first / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].first)
+						(float)intensity_space[i][j].counter / (cluster_member_count[nearest_cluster_center_index] + intensity_space[i][j].counter)
 						* j;
 
-					cluster_member_count[nearest_cluster_center_index] += intensity_space[i][j].first;
+					//cluster_member_count[nearest_cluster_center_index] += intensity_space[i][j].first;
+					cluster_member_count[nearest_cluster_center_index] += intensity_space[i][j].counter;
 				}
 			}
-
 		}
 
-		if (iteration_count == max_iteration-1){
+		debug = to_string(iteration_count + 1) + ":_______________________________________________________________________________________________________________________________________________________________________________________________________\n\t";
+		for (int i = 0; i < cluster_centers.size(); i++)
+		{
+			debug += "[" + to_string(cluster_average[i][0]) + "," + to_string(cluster_average[i][1]) + "]\t\t\t";
+		}
+		debug += "\n\t";
+		for (int i = 0; i < cluster_member_count.size(); i++)
+		{
+			debug += to_string(cluster_member_count[i]) + "\t\t\t";
+		}
+		WriteDebug(debug, true);
+
+		if (iteration_count == 1){
 			cout << endl << "cluster member count:" << endl;
 			for (int i = 0; i < cluster_centers.size(); ++i){
 				cout << cluster_member_count[i] << endl;
@@ -124,28 +157,26 @@ void FDModel::LoadImage(){
 	Mat intensity_space_image = Mat(256, 256, CV_8UC1);
 	for (int i = 0; i < 256; ++i){
 		for (int j = 0; j < 256; ++j){
-			intensity_space_image.at<uchar>(i, j) = ((intensity_space[i][j].first != 0) ? 255 : 0);
+			//intensity_space_image.at<uchar>(i, j) = ((intensity_space[i][j].first != 0) ? 255 : 0);
+			intensity_space_image.at<uchar>(i, j) = ((intensity_space[i][j].counter != 0) ? 255 : 0);
 		}
 	}
 
 	clusters_image = Mat(image.rows, mystery_width, CV_8UC1);
-	all_waters_image = Mat(image.rows, mystery_width, CV_8UC1);
-	flooded_area_image = Mat(image.rows, mystery_width, CV_8UC1);
-	natural_waters_input_image = imread("termviz.tif", CV_32FC4);
+	output_image = Mat(image.rows, mystery_width, CV_8UC1);
 	for (int i = 0; i < image.rows; ++i){
 		for (int j = 0; j < mystery_width; ++j){
 			int band1_value = (int)image.at<Vec4b>(i, j)[band1];
 			int band2_value = (int)image.at<Vec4b>(i, j)[band2];
 			if (!(band1_value == 0 && band2_value == 0)){
-				clusters_image.at<uchar>(i, j) = intensity_space[band1_value][band2_value].second * (255.0 / (cluster_centers.size()));
-				if (intensity_space[band1_value][band2_value].second == 0){
-					all_waters_image.at<uchar>(i, j) = 0;
-					if (natural_waters_input_image.at<Vec4b>(i, j)[0] == 255) flooded_area_image.at<uchar>(i, j) = 0;
-					else flooded_area_image.at<uchar>(i, j) = 255;
+				//clusters_image.at<uchar>(i, j) = intensity_space[band1_value][band2_value].second * (255.0 / (cluster_centers.size()));
+				clusters_image.at<uchar>(i, j) = intensity_space[band1_value][band2_value].cluster_index * (255.0 / (cluster_centers.size()));
+				//if (intensity_space[band1_value][band2_value].second == 0){
+				if (intensity_space[band1_value][band2_value].cluster_index == 0){
+					output_image.at<uchar>(i, j) = 0;
 				}
 				else{
-					all_waters_image.at<uchar>(i, j) = 255;
-					flooded_area_image.at<uchar>(i, j) = 255;
+					output_image.at<uchar>(i, j) = 255;
 				}
 			}
 			else{
@@ -154,18 +185,17 @@ void FDModel::LoadImage(){
 		}
 	}
 	
+	//namedWindow("original image", WINDOW_AUTOSIZE);
+	//imshow("original image", image);
 	//namedWindow("intensity space image", WINDOW_AUTOSIZE);
 	//imshow("intensity space image", intensity_space_image);
 	imwrite("00intensity_space_image.bmp", intensity_space_image);
 	//namedWindow("clusters", WINDOW_AUTOSIZE);
 	//imshow("clusters", clusters_image);
 	imwrite("00clusters.bmp", clusters_image);
-	//namedWindow("all waters", WINDOW_AUTOSIZE);
-	//imshow("all water", all_waters_image);
-	imwrite("00all_waters.bmp", all_waters_image);
-	//namedWindow("flooded area image", WINDOW_AUTOSIZE);
-	//imshow("flooded area image", flooded_area_image);
-	imwrite("00flooded_area.bmp", all_waters_image);
+	//namedWindow("water", WINDOW_AUTOSIZE);
+	//imshow("water", output_image);
+	imwrite("00water.bmp", output_image);
 	waitKey(0);
 
 	cout << endl << "Press ENTER to continue!" << endl;
@@ -208,3 +238,17 @@ int FDModel::get_nearest_cluster_center_index(int i, int j){
 				case 2: clusters_image.at<uchar>(i, j) = 170; break;
 				case 3: clusters_image.at<uchar>(i, j) = 255; break;
 				}*/
+
+
+///This function saves some run-time parameters into a text file.
+///Studying these values might help the developer to understand:
+///what the hell is happening when the algorythm not working as it should be.
+void FDModel::WriteDebug(string message, bool newline)
+{
+	debug_file.open("debug.txt", std::ios_base::app);
+	if (!newline)
+		debug_file << message;
+	else
+		debug_file << message << endl;
+	debug_file.close();
+}
