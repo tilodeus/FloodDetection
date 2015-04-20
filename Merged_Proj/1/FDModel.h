@@ -29,7 +29,6 @@ private:
 	Mat image;
 	Mat clusters_image;
 	Mat water_image;
-	//std::pair<int, int> intensity_space[256][256];
 	int_spc_el intensity_space[256][256];
 	std::vector<Vec2i> cluster_centers;
 	const int band1 = 3;

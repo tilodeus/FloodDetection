@@ -150,6 +150,10 @@ void FDModel::Process(){
 			int counter = intensity_space[i][j].counter;
 			if (counter == 0)
 				intensity_space_im_RGB.at<Vec3b>(i, j) = Vec3b(0,0,0);
+			else if (counter < 8)
+				intensity_space_im_RGB.at<Vec3b>(i, j) = Vec3b(40, 40, 0);
+			else if (counter < 40)
+				intensity_space_im_RGB.at<Vec3b>(i, j) = Vec3b(60, 60, 0);
 			else if (counter < 200)
 				intensity_space_im_RGB.at<Vec3b>(i, j) = Vec3b(90, 90, 0);
 			else if (counter < 1000)
