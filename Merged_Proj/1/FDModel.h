@@ -17,19 +17,18 @@ public:
 	~FDModel();
 
 	void LoadImage();
-	void preProcess();
 	void Process();
 	void Clusterise();
-	//salalala
 private:
 	struct int_spc_el{
 		int counter;
 		int cluster_index;
 	};
 
+	string input_image_name;
 	Mat image;
 	Mat clusters_image;
-	Mat output_image;
+	Mat water_image;
 	//std::pair<int, int> intensity_space[256][256];
 	int_spc_el intensity_space[256][256];
 	std::vector<Vec2i> cluster_centers;

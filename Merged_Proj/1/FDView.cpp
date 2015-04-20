@@ -12,7 +12,7 @@ void FDView::generateMenu(string message){
 	system("cls");
 	if (message != "")
 		cout << "Program's message:\n" << message << endl;
-	cout << "1) Detect flooded areas on input file\n2) exit\n   Input: ";
+	cout << " 1) Detect flooded areas on input file\n 2) Exit\n\n  Input: ";
 	waitforInput();
 }
 
@@ -20,27 +20,32 @@ void FDView::waitforInput(){
 
 	int a;
 	cin >> a;
+	if (!cin){
+		cin.clear();
+		cin.ignore(256, '\n');
+		errorMessage();
+	}
+	else{
 		switch (a) {
 		case 1: DoTheThing();
 			break;
 		case 2: exitProgram();
 			break;
-		default: defaultCase();
+		default: errorMessage();
 			break;
 		}
+	}
 }
 
 void FDView::DoTheThing(){
 	model.LoadImage();
-	model.preProcess();
 	model.Process();
-	//salalala
-	string message = "This space is mine and under construction, go elsewhere!\n";
+	string message = "Please choose from the menu items listed below!\n";
 	generateMenu(message);
 }
 
-void FDView::defaultCase(){
-	string message = "Use the numbers in front of the menu items!\n";
+void FDView::errorMessage(){
+	string message = "Not acceptable input. Please choose from the menu items listed below!\n";
 	generateMenu(message);
 }
 

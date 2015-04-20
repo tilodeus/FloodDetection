@@ -16,7 +16,7 @@ public:
 private:
 	void generateMenu(string);
 	void DoTheThing();
-	void defaultCase();
+	void errorMessage();
 	void exitProgram();
 
 	FDModel model;
