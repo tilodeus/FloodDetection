@@ -29,10 +29,13 @@ private:
 	Mat image;
 	Mat clusters_image;
 	Mat water_image;
+	Mat second_cluster_image;
 	int_spc_el intensity_space[256][256];
-	std::vector<Vec2i> cluster_centers;
-	const int band1 = 3;
-	const int band2 = 1;
+	std::vector<Vec2f> cluster_centers;
+	const int band1 = 0;
+	const int band2 = 3;
+	const int max_it_count = 100;
+	const int max_change = 0.1;
 
 	int get_nearest_cluster_center_index(int, int);
 
