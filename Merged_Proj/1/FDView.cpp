@@ -38,8 +38,8 @@ void FDView::waitforInput(){
 }
 
 void FDView::DoTheThing(){
+	model.LoadImages();
 	model.Init();
-	model.LoadImage();
 	model.Process();
 	generateMenu("Please choose from the menu items listed below!\n");
 }
