@@ -25,8 +25,6 @@ public:
 private:
 	BandLoader Loader;
 	OurISODATA ISODATA;
-
-	double goodness;
-
 	int pass;
+	double goodness;
 };

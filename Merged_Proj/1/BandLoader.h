@@ -8,6 +8,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include "dirent.h"
+#include "MyException.h"
 //#include GDAL
 //#include "gdal_priv.h"
 //#include "cpl_conv.h"
@@ -58,5 +59,5 @@ private:
 	bool UT_GetMaxPasses();
 	bool UT_CreateIBOrder();
 
-
+	MyException ex;
 };

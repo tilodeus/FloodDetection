@@ -43,6 +43,9 @@
     <ClCompile Include="OurISODATA.cpp">
       <Filter>Model\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MyException.cpp">
+      <Filter>Model\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FDView.h">
@@ -58,6 +61,9 @@
       <Filter>Model\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OurISODATA.h">
+      <Filter>Model\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MyException.h">
       <Filter>Model\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,29 +1,32 @@
-﻿Build started 2015.06.08. 12:45:17.
+﻿Build started 2015.06.08. 18:40:07.
      1>Project "d:\Projects\MSC\Semester4\SatelliteImageAnalysys\REPO2\Merged_Proj\1\1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ID:\programok\opencv\build\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt OurISODATA.cpp
          OurISODATA.cpp
-     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.h(49): warning C4244: 'initializing' : conversion from 'double' to 'const int', possible loss of data
+     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.h(50): warning C4244: 'initializing' : conversion from 'double' to 'const int', possible loss of data
      1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(31): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
      1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(38): warning C4018: '<' : signed/unsigned mismatch
      1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(42): warning C4018: '<' : signed/unsigned mismatch
-     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(79): warning C4018: '<' : signed/unsigned mismatch
-     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(102): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(112): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(121): warning C4018: '<' : signed/unsigned mismatch
-     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(126): warning C4018: '<' : signed/unsigned mismatch
-     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(134): warning C4018: '<' : signed/unsigned mismatch
-     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(171): warning C4018: '<' : signed/unsigned mismatch
-     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(238): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(77): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(100): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(110): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(119): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(124): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(132): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(169): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(235): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(320): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>d:\projects\msc\semester4\satelliteimageanalysys\repo2\merged_proj\1\ourisodata.cpp(312): warning C4715: 'OurISODATA::runUnittests' : not all control paths return a value
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Projects\MSC\Semester4\SatelliteImageAnalysys\REPO2\Merged_Proj\Debug\1.exe" /INCREMENTAL /NOLOGO /LIBPATH:D:\programok\opencv\build\x86\vc12\lib opencv_core249d.lib opencv_imgproc249d.lib opencv_highgui249d.lib opencv_ml249d.lib opencv_video249d.lib opencv_features2d249d.lib opencv_calib3d249d.lib opencv_objdetect249d.lib opencv_contrib249d.lib opencv_legacy249d.lib opencv_flann249d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Projects\MSC\Semester4\SatelliteImageAnalysys\REPO2\Merged_Proj\Debug\1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Projects\MSC\Semester4\SatelliteImageAnalysys\REPO2\Merged_Proj\Debug\1.lib" /MACHINE:X86 Debug\BandLoader.obj
          Debug\FDModel.obj
          Debug\FDView.obj
          Debug\main.obj
+         Debug\MyException.obj
          Debug\OurISODATA.obj
          1.vcxproj -> D:\Projects\MSC\Semester4\SatelliteImageAnalysys\REPO2\Merged_Proj\Debug\1.exe
      1>Done Building Project "d:\Projects\MSC\Semester4\SatelliteImageAnalysys\REPO2\Merged_Proj\1\1.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.89
+Time Elapsed 00:00:01.71

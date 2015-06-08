@@ -11,9 +11,10 @@ public:
 	FDView(string message);
 	~FDView();
 
-	void waitforInput();
+	
 
 private:
+	void waitforInput();
 	void generateMenu(string);
 	void DoTheThing();
 	void Unittest();

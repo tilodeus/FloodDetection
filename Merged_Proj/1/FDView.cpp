@@ -41,25 +41,40 @@ void FDView::waitforInput(){
 }
 
 void FDView::DoTheThing(){
-	system("cls");
-	cout << "Processing..." << endl;
-	model.Analyze();
-	for (int i = 0; i < model.goodnesses.size(); i++)
+	try
 	{
-		cout << i+1 << ".pass: has " << model.goodnesses[i] << "% accuracy finding flooded areas." << endl;
+		system("cls");
+		cout << "Processing..." << endl;
+		model.Analyze();
+		for (int i = 0; i < model.goodnesses.size(); i++)
+		{
+			cout << i + 1 << ".pass: has " << model.goodnesses[i] << "% accuracy finding flooded areas." << endl;
+		}
+		cout << "Press ENTER to continue" << endl;
+		cin.get(); cin.get();
+		generateMenu("Please choose from the menu items listed below!\n");
 	}
-	cout << "Press ENTER to continue" << endl;
-	cin.get(); cin.get();
-	generateMenu("Please choose from the menu items listed below!\n");
+	catch (MyException& e)
+	{
+		cout << e.errorMessage() << endl << "Press ENTER to quit (~bye)..." << endl;
+		cin.get(); cin.get();
+	}
 }
 
 void FDView::Unittest(){
-	if (model.runUnittests())
-		cout << "Unittested parts working as expected. All works as it should be (maybe...)" << endl;
-	else
-		cout << "One or more unittests failed... but I'm not saying which one." << endl;
-	cin.get(); cin.get();
-	generateMenu("Please choose from the menu items listed below!\n");
+	try
+	{
+	
+		if (model.runUnittests())
+			cout << "Unittested parts working as expected. All works as it should be (maybe...)" << endl;
+		cin.get(); cin.get();
+		generateMenu("Please choose from the menu items listed below!\n");
+	}
+	catch (MyException& e)
+	{
+		cout << e.errorMessage() << endl << "Press ENTER to quit(~bye)..." << endl;
+		cin.get(); cin.get();
+	}
 }
 
 void FDView::errorMessage(){

@@ -7,6 +7,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include "MyException.h"
 
 using namespace cv;
 using namespace std;
@@ -62,4 +63,7 @@ class OurISODATA
 
 		bool UT_get_nearest_cluster_center_index();
 		bool UT_compare_solution();
+
+		MyException ex;
+
 };

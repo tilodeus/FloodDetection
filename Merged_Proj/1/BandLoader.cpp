@@ -59,26 +59,22 @@ void BandLoader::CreateBands(string input_filename)
 Mat BandLoader::GetIB0(int pass)
 {
 	IB0.release();
-	cout << "most toltok be" << endl;
 	IB0 = imread("input/"+ib_permutations[(pass-1) * 2], CV_LOAD_IMAGE_UNCHANGED);
 	if (!IB0.data){ // input check
-		system("cls");
-		cout << "\nProgram's message:\n\n Error! File does not exist or can not be opened! Please try again!" << endl;
+		ex.setErrorMessage("In BandLoader::GetIB0() failed to load the " + ib_permutations[(pass - 1) * 2]);
+		throw ex;
 	}
-	cout << "betoltottem, returnolok" << endl;
 	return IB0;
 }
 
 Mat BandLoader::GetIB1(int pass)
 {
 	IB1.release();
-	cout << "most toltok be" << endl;
 	IB1 = imread("input/" + ib_permutations[(pass-1) * 2 + 1], CV_LOAD_IMAGE_UNCHANGED);
 	if (!IB1.data){ // input check
-		system("cls");
-		cout << "\nProgram's message:\n\n Error! File does not exist or can not be opened! Please try again!" << endl;
+		ex.setErrorMessage("In BandLoader::GetIB1() failed to load the " + ib_permutations[(pass - 1) * 2]);
+		throw ex;
 	}
-	cout << "betoltottem, returnolok" << endl;
 	return IB1;
 }
 
@@ -86,8 +82,8 @@ Mat BandLoader::GetRIM()
 {
 	Referency_Im = imread("input/referency.tif", CV_LOAD_IMAGE_GRAYSCALE);
 	if (!Referency_Im.data){ // input check
-		system("cls");
-		cout << "\nProgram's message:\n\n Error! File does not exist or can not be opened! Please try again!" << endl;
+		ex.setErrorMessage("In BandLoader::GetRIM() failed to load the referency.tif");
+		throw ex;
 	}
 	return Referency_Im;
 }
@@ -96,23 +92,9 @@ Mat BandLoader::GetNatWatersIM()
 {
 	NatWaters_Im = imread("input/natural_waters.tif", CV_8UC1);
 	if (!NatWaters_Im.data){ // input check
-		system("cls");
-		cout << "\nProgram's message:\n\n Error! File does not exist or can not be opened! Please try again!" << endl;
+		ex.setErrorMessage("In BandLoader::GetNatWatersIM() failed to load the natural_waters.tif");
+		throw ex;
 	}
-
-	// HA A STANDARD INPUTROL SZERETNENK BEOLVASNI, AKKOR AZT IGY KELLENE SZEPEN:
-	//system("cls");
-	//cout << endl << " Name of natural water's image: ";
-	//cin >> input_nat_wat_name;
-	//input_natural_waters = imread("input/" + input_nat_wat_name, CV_8UC1);
-
-	//while (!input_natural_waters.data){ // input check
-	//	system("cls");
-	//	cout <<  "\nProgram's message:\n\n Error! File does not exist or can not be opened! Please try again!" << endl;
-	//	cout << endl << " Name of natural water's image: ";
-	//	cin >> input_nat_wat_name;
-	//	input_natural_waters = imread("input/" + input_nat_wat_name, CV_8UC1);
-	//}
 	return NatWaters_Im;
 }
 
@@ -128,13 +110,12 @@ void BandLoader::countBands()
 	DIR *fd;
 
 	if ((fd = opendir(dir)) == NULL) {
-		fprintf(stderr, "listdir: can't open %s\n", dir);
-		return;
+		ex.setErrorMessage("Cannot open 'input' directory in BandLoader::countBands().");
+		throw ex;
 	}
 	while ((dp = readdir(fd)) != NULL) {
 		if (!strcmp(dp->d_name, ".") || !strcmp(dp->d_name, ".."))
 			continue;    /* skip self and parent */
-		
 		if (strstr(dp->d_name,"band") != NULL)
 			bandcount++;
 		//printf("%s/%s\n", dir, dp->d_name);
@@ -179,7 +160,13 @@ bool BandLoader::UT_CreateIBOrder()
 	}
 	bandcount = 0;
 	ib_permutations.clear();
-	return l;
+	if (l)
+		return true;
+	else
+	{
+		ex.setErrorMessage("BandLoader::UT_CreateIBOrder() failed.");
+		throw ex;
+	}
 }
 
 bool BandLoader::UT_GetMaxPasses()
@@ -189,7 +176,8 @@ bool BandLoader::UT_GetMaxPasses()
 		ib_permutations.push_back("band" + to_string(i));
 	if (!(GetMaxPasses() == 2)){
 		ib_permutations.clear();
-		return false;
+		ex.setErrorMessage("BandLoader::UT_GetMaxPasses() failed.");
+		throw ex;
 	}
 	else{
 		ib_permutations.clear();
@@ -201,6 +189,4 @@ bool BandLoader::runUnittests()
 {
 	if (UT_CreateIBOrder() && UT_GetMaxPasses())
 		return true;
-	else
-		return false;
 }

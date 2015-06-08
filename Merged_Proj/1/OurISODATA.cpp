@@ -14,7 +14,6 @@ OurISODATA::~OurISODATA()
 
 void OurISODATA::initISODATA(int _pass)
 {
-	cout << "most initelek" << endl;
 	result_goodness = 0.0;
 	pass = _pass;
 	input_im_rows = input_band0.rows;
@@ -26,9 +25,10 @@ void OurISODATA::initISODATA(int _pass)
 		}
 	}
 
+	const int max_centers = 30;
 	cluster_centers.clear();
-	for (int i = 1; i < 12; ++i)
-		cluster_centers.push_back(Vec2f(21 * i, 21 * i));
+	for (int i = 1; i < max_centers ; ++i)
+		cluster_centers.push_back(Vec2f((255 / max_centers) * i, (255 / max_centers) * i));
 
 	//debug:
 	debug = "####################################################################################################################################################################################################################\nFile name: ";
@@ -48,18 +48,16 @@ void OurISODATA::initISODATA(int _pass)
 
 void OurISODATA::runISODATA()
 {
-	cout << "most runolok" << endl;
-	cout << "computing is" << endl;
 	compute_intensity_space();
-	cout << "clusterising" << endl;
+
 	clusterise();
-	cout << "creating output images" << endl;
+
 	compute_output_images();
-	cout << "determining accuracy" << endl;
-	compare_solution(29);
-	cout << "creating output" << endl;
+
+	result_goodness = compare_solution(29);
+
 	write_images_to_file();
-	cout << "DONE" << endl;
+
 }
 
 void OurISODATA::compute_intensity_space(){
@@ -217,7 +215,6 @@ void OurISODATA::compute_output_images(){
 }
 
 void OurISODATA::write_images_to_file(){
-	cout << to_string(pass)+". futasa az mkdirnak" << endl;
 	string target = "output/" + to_string(pass) + "pass";
 	_mkdir(target.c_str());
 	imwrite(target + "/01_intensity_space_and_cluster_centers.bmp", intensity_space_im);
@@ -271,27 +268,26 @@ double OurISODATA::compare_solution(int param)
 	for (int i = 0; i < rows; ++i){
 		for (int j = 0; j < cols; ++j){
 			if ((int)input_band0.at<float>(i, j) != 0){
+				++all_pixels;
 				(int)input_referency.at<uchar>(i, j) == param ? is_water_on_ref = true : is_water_on_ref = false;
 				(int)flooded_areas_im.at<uchar>(i, j) != 255 ? is_water_on_output = true : is_water_on_output = false;
 				if (is_water_on_ref && is_water_on_output){
 					++good_pixels;
-					++all_pixels;
 					errormap_im.at<Vec3b>(i, j) = Vec3b(255, 0, 0);
 				}
 				else if (!is_water_on_ref && !is_water_on_output){
+					++good_pixels;
 					errormap_im.at<Vec3b>(i, j) = Vec3b(255, 255, 255);
 				}
 				else if (is_water_on_ref && !is_water_on_output) {
 					errormap_im.at<Vec3b>(i, j) = Vec3b(255, 0, 255);
-					++all_pixels;
 				}
 				else errormap_im.at<Vec3b>(i, j) = Vec3b(0, 150, 255);
 			}
 			else errormap_im.at<Vec3b>(i, j) = Vec3b(255, 255, 255);
 		}
 	}
-	result_goodness = good_pixels / (double)all_pixels;
-	return result_goodness;
+	return good_pixels / (double)all_pixels;
 }
 
 ///This function saves some run-time parameters into a text file.
@@ -311,10 +307,8 @@ void OurISODATA::WriteDebug(string message, bool newline)
 //UNITTESTS
 bool OurISODATA::runUnittests()
 {
-	if (UT_compare_solution())
+	if (UT_compare_solution() && UT_get_nearest_cluster_center_index())
 		return true;
-	else
-		return false;
 }
 
 bool OurISODATA::UT_get_nearest_cluster_center_index()
@@ -323,59 +317,65 @@ bool OurISODATA::UT_get_nearest_cluster_center_index()
 	cluster_centers.push_back(Vec2f(1, 1));
 	cluster_centers.push_back(Vec2f(3, 3));
 	cluster_centers.push_back(Vec2f(5, 5));
-	if (get_nearest_cluster_center_index(0, 0) == 0){
+	if (get_nearest_cluster_center_index(3.3, 3.3) == 1){
 		cluster_centers.clear();
 		return true;
 	}
-	else{
-		cluster_centers.clear();
-		return false;
+	else
+	{
+		ex.setErrorMessage("OurISODATA::UT_get_nearest_cluster_center_index() failed.");
+		throw ex;
 	}
 }
 
 bool OurISODATA::UT_compare_solution()
 {
-	return true;
-	//flooded_areas_im.release();
-	//input_referency.release();
-	//input_band0.release();
-	//vector<double> assert_array;
-	//assert_array.push_back(1);
-	//assert_array.push_back(0.5);
-	//assert_array.push_back(0.5);
-	//assert_array.push_back(0);
-	//input_band0 = imread("input/unit/accuracy_unit_test_input_band0.tif", CV_LOAD_IMAGE_GRAYSCALE);
-	//if (!input_band0.data){ // input check
-	//	system("cls");
-	//	cout << "\nUnittest's message:\n\n Error! input File not found for unittest!" << endl;
-	//}
-	//input_referency = imread("input/unit/accuracy_unit_test_ref_im.tif", CV_LOAD_IMAGE_GRAYSCALE);
-	//if (!input_referency.data){ // input check
-	//	system("cls");
-	//	cout << "\nUnittest's message:\n\n Error! ref File not found for unittest!" << endl;
-	//}
-	//cout << (int)input_referency.at<uchar>(0, 0) << " balfelso ertke" << endl;
-	//cout << (int)input_referency.at<uchar>(299, 0) << " balfelso ertke" << endl;
-	//bool l = true;
-	//int it = 0;
-	//while (it < 4)
-	//{
-	//	flooded_areas_im = imread("input/unit/accuracy_unit_test_output" + to_string(it) + ".tif", CV_LOAD_IMAGE_GRAYSCALE);
-	//	//flooded_areas_im = imread("input/unit/accuracy_unit_test_output0.tif", CV_LOAD_IMAGE_GRAYSCALE);
-	//	if (!flooded_areas_im.data){ // input check
-	//		system("cls");
-	//		cout << "\nUnittest's message:\n\n Error! output File not found for unittest!" << endl;
-	//	}
-	//	double tmp = compare_solution(0);
-	//	cout << "itt szallok el" << endl; 
-	//	l = l && (tmp==assert_array[it]);
-	//	cout << "acc: " << tmp << endl;
-	//	++it;
-	//	flooded_areas_im.release();
-	//}
-	//assert_array.clear();
-	//flooded_areas_im.release();
-	//input_referency.release();
-	//input_band0.release();
-	//return l;
+	flooded_areas_im.release();
+	input_referency.release();
+	input_band0.release();
+	vector<double> assert_array;
+	assert_array.push_back(1.0);
+	assert_array.push_back(0.75);
+	assert_array.push_back(0.5);
+	assert_array.push_back(0.0);
+	Mat tmp = imread("input/unit/accuracy_unit_test_input_band0.tif", CV_LOAD_IMAGE_GRAYSCALE);
+	if (!tmp.data){ // input check
+		ex.setErrorMessage("OurISODATA::UT_compare_solution() load input_band0 image failed.");
+		throw ex;
+	}
+	input_band0 = Mat(tmp.rows, tmp.cols, 5);
+	for (int i = 0; i < input_band0.rows; ++i)
+		for (int j = 0; j < input_band0.cols; ++j)
+			input_band0.at<float>(i, j) = (float)tmp.at<uchar>(i, j);
+
+	input_referency = imread("input/unit/accuracy_unit_test_ref_im.tif", CV_LOAD_IMAGE_GRAYSCALE);
+	if (!input_referency.data){ // input check
+		ex.setErrorMessage("OurISODATA::UT_compare_solution() load ref image failed.");
+		throw ex;
+	}
+	bool l = true;
+	int it = 0;
+	while (it < 4)
+	{
+		flooded_areas_im = imread("input/unit/accuracy_unit_test_output" + to_string(it) + ".tif", CV_LOAD_IMAGE_GRAYSCALE);
+		if (!flooded_areas_im.data){ // input check
+			ex.setErrorMessage("OurISODATA::UT_compare_solution() load output image failed.");
+			throw ex;
+		}
+		double tmp = compare_solution(0);
+		l = l && (tmp == assert_array[it]);
+		++it;
+		flooded_areas_im.release();
+	}
+	assert_array.clear();
+	flooded_areas_im.release();
+	input_referency.release();
+	input_band0.release();
+	if (l)
+		return true;
+	else
+	{
+		ex.setErrorMessage("OurISODATA::UT_compare_solution() failed.");
+		throw ex;
+	}
 }
