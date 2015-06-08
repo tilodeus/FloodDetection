@@ -16,6 +16,7 @@ public:
 private:
 	void generateMenu(string);
 	void DoTheThing();
+	void Unittest();
 	void errorMessage();
 	void exitProgram();
 

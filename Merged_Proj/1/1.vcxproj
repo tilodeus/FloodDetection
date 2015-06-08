@@ -84,13 +84,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BandLoader.cpp" />
     <ClCompile Include="FDModel.cpp" />
     <ClCompile Include="FDView.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="OurISODATA.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BandLoader.h" />
+    <ClInclude Include="dirent.h" />
     <ClInclude Include="FDModel.h" />
     <ClInclude Include="FDView.h" />
+    <ClInclude Include="OurISODATA.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

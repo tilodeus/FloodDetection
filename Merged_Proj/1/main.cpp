@@ -1,5 +1,5 @@
 #include "FDView.h"
-
+#include <direct.h>
 
 
 
@@ -14,6 +14,7 @@ int main(){
 	//--------------- KILEPES ELOTT ---------------
 	//cout << endl << "Press ENTER to exit!" << endl;
 	//cin.get(); cin.get();
+	_mkdir("output/2pass");
 
 	return 0;
 }

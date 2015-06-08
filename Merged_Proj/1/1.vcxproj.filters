@@ -25,6 +25,9 @@
     <Filter Include="View\Source Files">
       <UniqueIdentifier>{deb109ef-48a8-47de-bd81-7669292ffc31}</UniqueIdentifier>
     </Filter>
+    <Filter Include="input">
+      <UniqueIdentifier>{8053b32a-8df6-47ae-93fc-7bea5eab9e66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -34,12 +37,27 @@
     <ClCompile Include="FDModel.cpp">
       <Filter>Model\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BandLoader.cpp">
+      <Filter>Model\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OurISODATA.cpp">
+      <Filter>Model\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FDView.h">
       <Filter>View\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FDModel.h">
+      <Filter>Model\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BandLoader.h">
+      <Filter>Model\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dirent.h">
+      <Filter>Model\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OurISODATA.h">
       <Filter>Model\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
